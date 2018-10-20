@@ -108,7 +108,7 @@ public class Entry {
     components.add(phoneNumber == null ? "" : phoneNumber);
     components.add(directoryNumber == null ? "" : String.format("%03d", directoryNumber));
     components.add(entryCode == null ? "" : String.format("%04d", entryCode));
-    components.add(String.format("%02d", securityLevel));
+    components.add(securityLevel == null ? "" : String.format("%02d", securityLevel));
     components.add(deviceNumber == null ? "" : deviceNumber);
     components.add(notes == null ? "" : notes);
     components.add(isVendor ? "Y" : "N");

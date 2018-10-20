@@ -95,6 +95,7 @@ public class EntryAdapter {
       builder.setEntryCode(permanentEntryCode.code);
       builder.setSecurityLevel(securityLevelMap.get(permanentEntryCode.type));
     }
+    // TODO if there is no entry code, is a security level needed?
 
     List<Entry> result = new ArrayList<>();
     result.add(builder.build());
