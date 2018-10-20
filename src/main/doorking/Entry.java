@@ -92,6 +92,13 @@ public class Entry {
 
   private static final Joiner COMMA_JOINER = Joiner.on(',');
 
+  private static final String HEADERS[] = { "H", "AAAC", "PHONE",
+      "D", "CODE", "SL", "DEVICE#", "NOTES", "VENDOR" };
+
+  public static String getHeaders() {
+    return COMMA_JOINER.join(HEADERS);
+  }
+
   @Override
   public String toString() {
     List<String> components = new ArrayList<>();

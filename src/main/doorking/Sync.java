@@ -19,11 +19,13 @@
 
 package doorking;
 
-import java.io.File;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
-import com.google.common.io.Files;
 import com.google.protobuf.TextFormat;
 
 import doorking.EntryCodeAdapter.EntryCodes;
@@ -36,6 +38,8 @@ public class Sync {
     new Sync().run();
   }
 
+  private static final String OUTPUT_FILE = "/tmp/doorking.csv";
+
   public void run() throws Exception {
     Config config = readConfig();
     Result result = new GoogleRetriever(config).retrieve();
@@ -45,14 +49,21 @@ public class Sync {
 
     EntryAdapter adapter = new EntryAdapter(config, result.entries, entryCodes);
     List<Entry> entries = adapter.adapt();
-    entries.forEach(entry -> System.out.println(entry));
+
+    List<String> lines = new ArrayList<>();
+    lines.add("ACCOUNT," + Entry.getHeaders());
+    entries.forEach(entry -> lines.add(config.getAccountName() + "," + entry));
+    Files.write(Paths.get(OUTPUT_FILE), lines, StandardCharsets.UTF_8);
+
+    System.err.println("Wrote " + OUTPUT_FILE);
   }
 
   public static Config readConfig() throws Exception {
-    File proto = new File(System.getProperty("user.home"), ".doorking");
+    Path proto = Paths.get(System.getProperty("user.home"), ".doorking");
     Config.Builder config = Config.newBuilder();
     TextFormat.getParser().merge(
-        Files.toString(proto, StandardCharsets.UTF_8), config);
+        String.join(System.lineSeparator(), Files.readAllLines(proto)),
+        config);
     return config.build();
   }
 }
