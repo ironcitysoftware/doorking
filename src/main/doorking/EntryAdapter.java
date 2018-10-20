@@ -129,7 +129,8 @@ public class EntryAdapter {
       Map<EntryCodeType, Integer> securityLevelMap) {
     Preconditions.checkState(entryCode.type == EntryCodeType.PERMANENT);
     Entry.Builder builder = Entry.newBuilder();
-    builder.setDirectoryDisplayName("Legacy entry for " + name);
+    builder.setDirectoryDisplayName(name);
+    builder.setNotes("Legacy entry");
     builder.setEntryCode(entryCode.code);
     builder.setSecurityLevel(securityLevelMap.get(entryCode.type));
     builder.markHidden();
