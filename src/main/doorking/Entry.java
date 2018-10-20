@@ -92,8 +92,8 @@ public class Entry {
 
   private static final Joiner COMMA_JOINER = Joiner.on(',');
 
-  private static final String HEADERS[] = { "H", "AAAC", "PHONE",
-      "D", "CODE", "SL", "DEVICE#", "NOTES", "VENDOR" };
+  private static final String HEADERS[] = { "Resident", "H", "AAC", "PHONE",
+      "DIR", "ENT", "SL", "DEVICE#", "NOTES", "VENDOR" };
 
   public static String getHeaders() {
     return COMMA_JOINER.join(HEADERS);
@@ -139,6 +139,10 @@ public class Entry {
       return this;
     }
 
+    public String getDirectoryDisplayName() {
+      return directoryDisplayName;
+    }
+
     public Builder markHidden() {
       this.isHidden = true;
       return this;
@@ -149,8 +153,23 @@ public class Entry {
       return this;
     }
 
+    public Builder clearAreaCode() {
+      this.areaCode = null;
+      return this;
+    }
+
     public Builder setPhoneNumber(String phoneNumber) {
       this.phoneNumber = phoneNumber;
+      return this;
+    }
+
+    public Builder clearPhoneNumber() {
+      this.phoneNumber = null;
+      return this;
+    }
+
+    public Builder clearDirectoryNumber() {
+      this.directoryNumber = null;
       return this;
     }
 

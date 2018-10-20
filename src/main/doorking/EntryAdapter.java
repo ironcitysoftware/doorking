@@ -77,7 +77,8 @@ public class EntryAdapter {
     String notes = String.format("%s %s", row.get(COLUMN_HOUSE_NUMBER),
         row.get(COLUMN_STREET));
     builder.setNotes(notes);
-    builder.setDirectoryDisplayName((String) row.get(COLUMN_DISPLAY_NAME));
+    String directoryName = (String) row.get(COLUMN_DISPLAY_NAME);
+    builder.setDirectoryDisplayName(directoryName);
 
     int directoryNumber = getDirectoryNumber(row.get(COLUMN_DIRECTORY_NUMBER));
     builder.setDirectoryNumber(directoryNumber);
@@ -101,8 +102,13 @@ public class EntryAdapter {
     result.add(builder.build());
 
     EntryCode limitedEntryCode = null;
+    int suffix = 2;
     while ((limitedEntryCode = entryCodes.lookupAndRemoveResidentCode(key,
         EntryCodeType.LIMITED)) != null) {
+      builder.clearDirectoryNumber();
+      builder.clearAreaCode();
+      builder.clearPhoneNumber();
+      builder.setDirectoryDisplayName(directoryName + " " + suffix++);
       builder.setEntryCode(limitedEntryCode.code);
       builder.setSecurityLevel(securityLevelMap.get(limitedEntryCode.type));
       builder.setNotes(notes + " limited");
