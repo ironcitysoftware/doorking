@@ -192,6 +192,11 @@ public class Entry {
       this.deviceNumber = deviceNumber;
       return this;
     }
+    
+    public Builder clearDeviceNumber() {
+      this.deviceNumber = null;
+      return this;
+    }
 
     public Builder setNotes(String notes) {
       this.notes = notes;

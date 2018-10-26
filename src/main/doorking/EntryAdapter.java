@@ -68,6 +68,7 @@ public class EntryAdapter {
   private static final int COLUMN_DIRECTORY_NUMBER = 3;
   private static final int COLUMN_DISPLAY_NAME = 4;
   private static final int COLUMN_PHONE_NUMBER = 5;
+  private static final int COLUMN_DEVICE_NUMBER = 6;
 
   private List<Entry> getResidentEntry(List<Object> row,
       Map<EntryCodeType, Integer> securityLevelMap) {
@@ -83,6 +84,13 @@ public class EntryAdapter {
     int directoryNumber = getDirectoryNumber(row.get(COLUMN_DIRECTORY_NUMBER));
     builder.setDirectoryNumber(directoryNumber);
 
+    if (row.size() > COLUMN_DEVICE_NUMBER) {
+      String deviceNumber = (String) row.get(COLUMN_DEVICE_NUMBER);
+      if (deviceNumber != null && !deviceNumber.isEmpty()) {
+        builder.setDeviceNumber(deviceNumber);
+      }
+    }
+    
     List<String> phoneNumberComponents = splitPhoneNumber(
         row.get(COLUMN_PHONE_NUMBER));
     if (!phoneNumberComponents.get(0).equals(config.getLocalPhonePrefix())) {
@@ -105,6 +113,7 @@ public class EntryAdapter {
     int suffix = 2;
     while ((limitedEntryCode = entryCodes.lookupAndRemoveResidentCode(key,
         EntryCodeType.LIMITED)) != null) {
+      builder.clearDeviceNumber();
       builder.clearDirectoryNumber();
       builder.clearAreaCode();
       builder.clearPhoneNumber();
