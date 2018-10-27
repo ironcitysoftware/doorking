@@ -70,6 +70,8 @@ public class EntryAdapter {
   private static final int COLUMN_PHONE_NUMBER = 5;
   private static final int COLUMN_DEVICE_NUMBER = 6;
   private static final int COLUMN_DEVICE_NUMBER2 = 7;
+  private static final int COLUMN_DEVICE_NUMBER3 = 8;
+  private static final int COLUMN_DEVICE_NUMBER4 = 9;
 
   private List<Entry> getResidentEntry(List<Object> row,
       Map<EntryCodeType, Integer> securityLevelMap) {
@@ -85,19 +87,10 @@ public class EntryAdapter {
     int directoryNumber = getDirectoryNumber(row.get(COLUMN_DIRECTORY_NUMBER));
     builder.setDirectoryNumber(directoryNumber);
 
-    if (row.size() > COLUMN_DEVICE_NUMBER) {
-      String deviceNumber = (String) row.get(COLUMN_DEVICE_NUMBER);
-      if (deviceNumber != null && !deviceNumber.isEmpty()) {
-        builder.addDeviceNumber(deviceNumber);
-      }
-    }
-    
-    if (row.size() > COLUMN_DEVICE_NUMBER2) {
-      String deviceNumber = (String) row.get(COLUMN_DEVICE_NUMBER2);
-      if (deviceNumber != null && !deviceNumber.isEmpty()) {
-        builder.addDeviceNumber(deviceNumber);
-      }
-    }
+    addDeviceNumberFromColumn(COLUMN_DEVICE_NUMBER, row, builder);
+    addDeviceNumberFromColumn(COLUMN_DEVICE_NUMBER2, row, builder);
+    addDeviceNumberFromColumn(COLUMN_DEVICE_NUMBER3, row, builder);
+    addDeviceNumberFromColumn(COLUMN_DEVICE_NUMBER4, row, builder);
     
     List<String> phoneNumberComponents = splitPhoneNumber(
         row.get(COLUMN_PHONE_NUMBER));
@@ -135,6 +128,15 @@ public class EntryAdapter {
     return result;
   }
 
+  private void addDeviceNumberFromColumn(int column, List<Object> row, Entry.Builder builder) {
+    if (row.size() > column) {
+      String deviceNumber = (String) row.get(column);
+      if (deviceNumber != null && !deviceNumber.isEmpty()) {
+        builder.addDeviceNumber(deviceNumber);
+      }
+    }
+  }
+  
   private Entry getVendorEntry(String name, EntryCode entryCode,
       Map<EntryCodeType, Integer> securityLevelMap) {
     // TODO Police

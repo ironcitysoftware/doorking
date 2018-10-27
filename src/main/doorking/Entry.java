@@ -93,7 +93,8 @@ public class Entry {
   private static final Joiner COMMA_JOINER = Joiner.on(',');
 
   private static final String HEADERS[] = { "Resident", "H", "AAC", "PHONE",
-      "DIR", "ENT", "SL", "DEVICE#", "NOTES", "VENDOR", "DEVICE2" };
+      "DIR", "ENT", "SL", "DEVICE#", "NOTES", "VENDOR", "DEVICE2", "DEVICE3",
+      "DEVICE4" };
 
   public static String getHeaders() {
     return COMMA_JOINER.join(HEADERS);
@@ -114,6 +115,8 @@ public class Entry {
     components.add(notes == null ? "" : notes);
     components.add(isVendor ? "Y" : "N");
     components.add(deviceNumber.size() < 2 ? "" : deviceNumber.get(1));
+    components.add(deviceNumber.size() < 3 ? "" : deviceNumber.get(2));
+    components.add(deviceNumber.size() < 4 ? "" : deviceNumber.get(3));
     return COMMA_JOINER.join(components);
   }
 
@@ -211,7 +214,7 @@ public class Entry {
     }
 
     public Entry build() {
-      Preconditions.checkState(deviceNumber.size() < 3);
+      Preconditions.checkState(deviceNumber.size() < 5);
       return new Entry(directoryDisplayName, isHidden, areaCode, phoneNumber,
           directoryNumber, entryCode, securityLevel, deviceNumber, notes, isVendor);
     }
