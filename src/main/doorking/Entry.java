@@ -39,7 +39,7 @@ public class Entry {
   private final Integer directoryNumber;
   private final Integer entryCode;
   private final Integer securityLevel;
-  private final String deviceNumber;
+  private final List<String> deviceNumber;
   private final String notes;
   private final boolean isVendor;
 
@@ -50,7 +50,7 @@ public class Entry {
       Integer directoryNumber,
       Integer entryCode,
       Integer securityLevel,
-      String deviceNumber,
+      List<String> deviceNumber,
       String notes,
       boolean isVendor) {
     Preconditions.checkArgument(!(entryCode == null ^ securityLevel == null));
@@ -93,12 +93,13 @@ public class Entry {
   private static final Joiner COMMA_JOINER = Joiner.on(',');
 
   private static final String HEADERS[] = { "Resident", "H", "AAC", "PHONE",
-      "DIR", "ENT", "SL", "DEVICE#", "NOTES", "VENDOR" };
+      "DIR", "ENT", "SL", "DEVICE#", "NOTES", "VENDOR", "DEVICE2" };
 
   public static String getHeaders() {
     return COMMA_JOINER.join(HEADERS);
   }
 
+  /** Used to write the CSV */
   @Override
   public String toString() {
     List<String> components = new ArrayList<>();
@@ -109,9 +110,10 @@ public class Entry {
     components.add(directoryNumber == null ? "" : String.format("%03d", directoryNumber));
     components.add(entryCode == null ? "" : String.format("%04d", entryCode));
     components.add(securityLevel == null ? "" : String.format("%02d", securityLevel));
-    components.add(deviceNumber == null ? "" : deviceNumber);
+    components.add(deviceNumber.size() < 1 ? "" : deviceNumber.get(0));
     components.add(notes == null ? "" : notes);
     components.add(isVendor ? "Y" : "N");
+    components.add(deviceNumber.size() < 2 ? "" : deviceNumber.get(1));
     return COMMA_JOINER.join(components);
   }
 
@@ -130,7 +132,7 @@ public class Entry {
     Integer directoryNumber;
     Integer entryCode;
     Integer securityLevel;
-    String deviceNumber;
+    List<String> deviceNumber = new ArrayList<>();
     String notes;
     boolean isVendor;
 
@@ -188,13 +190,13 @@ public class Entry {
       return this;
     }
 
-    public Builder setDeviceNumber(String deviceNumber) {
-      this.deviceNumber = deviceNumber;
+    public Builder addDeviceNumber(String deviceNumber) {
+      this.deviceNumber.add(deviceNumber);
       return this;
     }
-    
+
     public Builder clearDeviceNumber() {
-      this.deviceNumber = null;
+      this.deviceNumber.clear();
       return this;
     }
 
@@ -209,6 +211,7 @@ public class Entry {
     }
 
     public Entry build() {
+      Preconditions.checkState(deviceNumber.size() < 3);
       return new Entry(directoryDisplayName, isHidden, areaCode, phoneNumber,
           directoryNumber, entryCode, securityLevel, deviceNumber, notes, isVendor);
     }
