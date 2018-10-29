@@ -25,6 +25,7 @@ import java.util.Objects;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 
 /**
  * A DoorKing Entry which will be written to a CSV file for import
@@ -216,7 +217,8 @@ public class Entry {
     public Entry build() {
       Preconditions.checkState(deviceNumber.size() < 5);
       return new Entry(directoryDisplayName, isHidden, areaCode, phoneNumber,
-          directoryNumber, entryCode, securityLevel, deviceNumber, notes, isVendor);
+          directoryNumber, entryCode, securityLevel,
+          ImmutableList.copyOf(deviceNumber), notes, isVendor);
     }
   }
 }
