@@ -43,7 +43,7 @@ public class EntryCodeAdapter {
   private static final int COLUMN_NAME = 2;
   private static final int COLUMN_ENTRY_CODE = 3;
   private static final int COLUMN_ENTRY_CODE_TYPE = 4;
-  private static final int COLUMN_NOTES = 6;
+  private static final int COLUMN_NOTES = 5;
 
   public class EntryCodes {
     public EntryCodes(
