@@ -26,7 +26,8 @@ public class EntryCode {
   enum EntryCodeType {
     PERMANENT,
     LIMITED,
-    DELIVERY;
+    DELIVERY,
+    NEWSPAPER;
   }
 
   EntryCode(int code, EntryCodeType type) {
