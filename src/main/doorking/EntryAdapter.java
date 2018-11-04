@@ -110,8 +110,27 @@ public class EntryAdapter {
     List<Entry> result = new ArrayList<>();
     result.add(builder.build());
 
-    EntryCode limitedEntryCode = null;
+    // Add hidden entries for additional permanent entry codes.
+
     int suffix = 2;
+
+    while ((permanentEntryCode = entryCodes.lookupAndRemoveResidentCode(key,
+        EntryCodeType.PERMANENT)) != null) {
+      builder.clearDeviceNumber();
+      builder.clearDirectoryNumber();
+      builder.clearAreaCode();
+      builder.clearPhoneNumber();
+      builder.setDirectoryDisplayName(directoryName + " " + suffix++);
+      builder.setEntryCode(permanentEntryCode.code);
+      builder.setSecurityLevel(securityLevelMap.get(permanentEntryCode.type));
+      builder.setNotes(notes + " permanent");
+      builder.markHidden();
+      result.add(builder.build());    
+    }
+
+    // Add hidden entries for each limited entry codes.
+
+    EntryCode limitedEntryCode = null;
     while ((limitedEntryCode = entryCodes.lookupAndRemoveResidentCode(key,
         EntryCodeType.LIMITED)) != null) {
       builder.clearDeviceNumber();
