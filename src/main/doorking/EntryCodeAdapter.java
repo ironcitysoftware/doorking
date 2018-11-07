@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 import com.google.api.client.util.Preconditions;
 import com.google.common.collect.HashMultimap;
@@ -33,9 +34,11 @@ import doorking.EntryCode.EntryCodeType;
 /** Adapts a custom spreadsheet to a set of entry codes and types. */
 public class EntryCodeAdapter {
   private final List<List<Object>> rows;
+  private final Set<Integer> deletedCodes;
 
-  public EntryCodeAdapter(List<List<Object>> rows) {
+  public EntryCodeAdapter(List<List<Object>> rows, Set<Integer> deletedCodes) {
     this.rows = rows;
+    this.deletedCodes = deletedCodes;
   }
 
   private static final int COLUMN_STREET = 0;
@@ -107,6 +110,9 @@ public class EntryCodeAdapter {
       }
 
       int codeDigits = Integer.parseInt((String) row.get(COLUMN_ENTRY_CODE));
+      Preconditions.checkState(!deletedCodes.contains(codeDigits),
+          String.format("Code %04d is present on the deleted entry codes tab",
+              codeDigits));
       String codeType = (String) row.get(COLUMN_ENTRY_CODE_TYPE);
       EntryCode entryCode = new EntryCode(codeDigits,
           EntryCodeType.valueOf(codeType.toUpperCase()));

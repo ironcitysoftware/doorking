@@ -25,6 +25,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import com.google.protobuf.TextFormat;
 
@@ -44,7 +45,10 @@ public class Sync {
     Config config = readConfig();
     Result result = new GoogleRetriever(config).retrieve();
 
-    EntryCodeAdapter entryCodeAdapter = new EntryCodeAdapter(result.codes);
+    DeletedEntryCodeAdapter deletedEntryCodeAdapter = new DeletedEntryCodeAdapter(result.deletedCodes);
+    Set<Integer> deletedCodes = deletedEntryCodeAdapter.adapt();
+    
+    EntryCodeAdapter entryCodeAdapter = new EntryCodeAdapter(result.codes, deletedCodes);
     EntryCodes entryCodes = entryCodeAdapter.adapt();
 
     EntryAdapter adapter = new EntryAdapter(config, result.entries, entryCodes);

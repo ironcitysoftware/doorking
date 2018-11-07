@@ -31,6 +31,7 @@ message Config {
   optional string sheet_id = 6;
   optional string telephone_entry_range = 7;
   optional string entry_code_range = 8;
+  optional string deleted_entry_code_range = 12;
   optional string local_phone_prefix = 9;
   repeated SecurityLevelMapping security_level_mapping = 10;
   optional string account_name = 11;

@@ -63,10 +63,13 @@ public class GoogleRetriever {
   public static class Result {
     public final List<List<Object>> entries;
     public final List<List<Object>> codes;
-
-    public Result(List<List<Object>> entries, List<List<Object>> codes) {
+    public final List<List<Object>> deletedCodes;
+    
+    public Result(List<List<Object>> entries, List<List<Object>> codes,
+        List<List<Object>> deletedCodes) {
       this.entries = entries;
       this.codes = codes;
+      this.deletedCodes = deletedCodes;
     }
   }
 
@@ -81,7 +84,10 @@ public class GoogleRetriever {
     ValueRange codes = service.spreadsheets().values()
         .get(config.getSheetId(), config.getEntryCodeRange())
         .execute();
-    return new Result(entries.getValues(), codes.getValues());
+    ValueRange deletedCodes = service.spreadsheets().values()
+        .get(config.getSheetId(), config.getDeletedEntryCodeRange())
+        .execute();
+    return new Result(entries.getValues(), codes.getValues(), deletedCodes.getValues());
   }
 
   /** Authorizes the installed application to access user's protected data. */
