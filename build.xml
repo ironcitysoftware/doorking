@@ -70,6 +70,7 @@
 
   <target name="build" depends="build-doorking-proto">
     <mkdir dir="${bin}" />
+  	<mkdir dir="src/test" />
     <javac srcdir="src/main" includes="**" destdir="${bin}" includeantruntime="false" debug="true" >
       <classpath>
         <path refid="main-classpath"/>
@@ -83,7 +84,6 @@
   </target>
 
   <target name="test" depends="build">
-  	<mkdir dir="src/test" />
     <junit fork="true" printsummary="yes" haltonfailure="yes">
       <jvmarg value="-Djava.util.logging.config.file=scripts/logging.properties" />
       <classpath>
