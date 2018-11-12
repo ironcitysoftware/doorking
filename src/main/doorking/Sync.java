@@ -64,6 +64,7 @@ public class Sync {
 
   public static Config readConfig() throws Exception {
     Path proto = Paths.get(System.getProperty("user.home"), ".doorking");
+    System.err.println("Reading configuration from " + proto);
     Config.Builder config = Config.newBuilder();
     TextFormat.getParser().merge(
         String.join(System.lineSeparator(), Files.readAllLines(proto)),

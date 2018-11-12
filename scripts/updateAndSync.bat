@@ -22,3 +22,4 @@ set CLASSPATH=%CLASSPATH%;lib\jackson-core-2.9.6.jar
 set CLASSPATH=%CLASSPATH%;lib\jdo2-api-2.3-eb.jar
 
 java -cp %CLASSPATH% doorking.Sync
+pause
