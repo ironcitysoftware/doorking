@@ -69,6 +69,7 @@
   </target>
 
   <target name="test" depends="build">
+  	<mkdir dir="src/test" />
     <junit fork="true" printsummary="yes" haltonfailure="yes">
       <jvmarg value="-Djava.util.logging.config.file=scripts/logging.properties" />
       <classpath>

@@ -23,7 +23,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.google.api.client.util.Preconditions;
+import com.google.common.base.Preconditions;
 
 /** Adapts a custom spreadsheet to a set of entry codes. */
 public class DeletedEntryCodeAdapter {
