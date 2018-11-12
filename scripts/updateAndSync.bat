@@ -1,7 +1,7 @@
 @echo off
 
 git pull
-ant
+call ant
 
 set CLASSPATH=bin
 set CLASSPATH=%CLASSPATH%;lib\protobuf-2.6.1.jar
