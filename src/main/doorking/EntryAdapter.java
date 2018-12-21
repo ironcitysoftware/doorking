@@ -82,6 +82,9 @@ public class EntryAdapter {
         row.get(COLUMN_STREET));
     builder.setNotes(notes);
     String directoryName = (String) row.get(COLUMN_DISPLAY_NAME);
+    if (directoryName.isEmpty()) {
+      return ImmutableList.of();
+    }
     builder.setDirectoryDisplayName(directoryName);
 
     int directoryNumber = getDirectoryNumber(row.get(COLUMN_DIRECTORY_NUMBER));
@@ -91,7 +94,7 @@ public class EntryAdapter {
     addDeviceNumberFromColumn(COLUMN_DEVICE_NUMBER2, row, builder);
     addDeviceNumberFromColumn(COLUMN_DEVICE_NUMBER3, row, builder);
     addDeviceNumberFromColumn(COLUMN_DEVICE_NUMBER4, row, builder);
-    
+
     List<String> phoneNumberComponents = splitPhoneNumber(
         row.get(COLUMN_PHONE_NUMBER));
     if (!phoneNumberComponents.get(0).equals(config.getLocalPhonePrefix())) {
@@ -125,7 +128,7 @@ public class EntryAdapter {
       builder.setSecurityLevel(securityLevelMap.get(permanentEntryCode.type));
       builder.setNotes(notes + " permanent");
       builder.markHidden();
-      result.add(builder.build());    
+      result.add(builder.build());
     }
 
     // Add hidden entries for each limited entry codes.
@@ -155,7 +158,7 @@ public class EntryAdapter {
       }
     }
   }
-  
+
   private Entry getVendorEntry(String name, EntryCode entryCode,
       Map<EntryCodeType, Integer> securityLevelMap) {
     // TODO Police
