@@ -147,6 +147,24 @@ public class EntryAdapter {
       builder.markHidden();
       result.add(builder.build());
     }
+
+    // Add hidden entries for each delivery entry codes.
+
+    EntryCode deliveryEntryCode = null;
+    while ((deliveryEntryCode = entryCodes.lookupAndRemoveResidentCode(key,
+        EntryCodeType.DELIVERY)) != null) {
+      builder.clearDeviceNumber();
+      builder.clearDirectoryNumber();
+      builder.clearAreaCode();
+      builder.clearPhoneNumber();
+      builder.setDirectoryDisplayName(directoryName + " " + suffix++);
+      builder.setEntryCode(deliveryEntryCode.code);
+      builder.setSecurityLevel(securityLevelMap.get(deliveryEntryCode.type));
+      builder.setNotes(notes + " delivery");
+      builder.markHidden();
+      result.add(builder.build());
+    }
+
     return result;
   }
 
