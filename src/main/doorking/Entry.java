@@ -95,7 +95,7 @@ public class Entry {
 
   private static final String HEADERS[] = { "Resident", "H", "AAC", "PHONE",
       "DIR", "ENT", "SL", "DEVICE#", "NOTES", "VENDOR", "DEVICE2", "DEVICE3",
-      "DEVICE4" };
+      "DEVICE4", "DEVICE5", "DEVICE6" };
 
   public static String getHeaders() {
     return COMMA_JOINER.join(HEADERS);
@@ -115,9 +115,10 @@ public class Entry {
     components.add(deviceNumber.size() < 1 ? "" : deviceNumber.get(0));
     components.add(notes == null ? "" : notes);
     components.add(isVendor ? "Y" : "N");
-    components.add(deviceNumber.size() < 2 ? "" : deviceNumber.get(1));
-    components.add(deviceNumber.size() < 3 ? "" : deviceNumber.get(2));
-    components.add(deviceNumber.size() < 4 ? "" : deviceNumber.get(3));
+    for (int i = 1; i <= 5; i++) {
+      components.add(deviceNumber.size() < (i + 1) ? "" : deviceNumber.get(i));
+    }
+
     return COMMA_JOINER.join(components);
   }
 

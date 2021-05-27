@@ -68,10 +68,12 @@ public class EntryAdapter {
   private static final int COLUMN_DIRECTORY_NUMBER = 3;
   private static final int COLUMN_DISPLAY_NAME = 4;
   private static final int COLUMN_PHONE_NUMBER = 5;
-  private static final int COLUMN_DEVICE_NUMBER = 6;
-  private static final int COLUMN_DEVICE_NUMBER2 = 7;
-  private static final int COLUMN_DEVICE_NUMBER3 = 8;
-  private static final int COLUMN_DEVICE_NUMBER4 = 9;
+  private static final int COLUMN_DEVICE_NUMBER = 6;  // G
+  private static final int COLUMN_DEVICE_NUMBER2 = 7;  // H
+  private static final int COLUMN_DEVICE_NUMBER3 = 8;  // I
+  private static final int COLUMN_DEVICE_NUMBER4 = 9;  // J
+  private static final int COLUMN_DEVICE_NUMBER5 = 10;  // K
+  private static final int COLUMN_DEVICE_NUMBER6 = 11;  // L
 
   private List<Entry> getResidentEntry(List<Object> row,
       Map<EntryCodeType, Integer> securityLevelMap) {
@@ -94,6 +96,8 @@ public class EntryAdapter {
     addDeviceNumberFromColumn(COLUMN_DEVICE_NUMBER2, row, builder);
     addDeviceNumberFromColumn(COLUMN_DEVICE_NUMBER3, row, builder);
     addDeviceNumberFromColumn(COLUMN_DEVICE_NUMBER4, row, builder);
+    addDeviceNumberFromColumn(COLUMN_DEVICE_NUMBER5, row, builder);
+    addDeviceNumberFromColumn(COLUMN_DEVICE_NUMBER6, row, builder);
 
     List<String> phoneNumberComponents = splitPhoneNumber(
         row.get(COLUMN_PHONE_NUMBER));
