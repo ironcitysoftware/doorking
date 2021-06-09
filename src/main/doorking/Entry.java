@@ -220,7 +220,7 @@ public class Entry {
     }
 
     public Entry build() {
-      Preconditions.checkState(deviceNumber.size() < 5);
+      Preconditions.checkState(deviceNumber.size() < 7);
       return new Entry(directoryDisplayName, isHidden, areaCode, phoneNumber,
           directoryNumber, entryCode, securityLevel,
           ImmutableList.copyOf(deviceNumber), notes, isVendor);
