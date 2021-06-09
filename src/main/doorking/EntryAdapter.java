@@ -114,8 +114,6 @@ public class EntryAdapter {
     }
     // TODO if there is no entry code, is a security level needed?
 
-    System.out.println("Adding:\n" + builder.build());
-    
     List<Entry> result = new ArrayList<>();
     result.add(builder.build());
 
