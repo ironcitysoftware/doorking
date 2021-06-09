@@ -115,7 +115,9 @@ public class Entry {
     components.add(deviceNumber.size() < 1 ? "" : deviceNumber.get(0));
     components.add(notes == null ? "" : notes);
     components.add(isVendor ? "Y" : "N");
-    for (int i = 1; i <= 5; i++) {
+    System.out.println(directoryDisplayName);
+    for (int i = 1; i <= 6; i++) {
+      System.out.printf("  dev=%d [%s]\n", i, deviceNumber.get(i));
       components.add(deviceNumber.size() < (i + 1) ? "" : deviceNumber.get(i));
     }
 
