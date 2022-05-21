@@ -21,15 +21,19 @@ package doorking;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.InterfaceAddress;
 import java.security.GeneralSecurityException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Logger;
 
 import com.google.api.client.auth.oauth2.AuthorizationCodeFlow;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
 import com.google.api.client.extensions.java6.auth.oauth2.VerificationCodeReceiver;
+import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.HttpTransport;
@@ -44,13 +48,12 @@ import com.google.api.services.sheets.v4.model.ValueRange;
 import doorking.Proto.Config;
 
 public class GoogleRetriever {
-  private static final String OUT_OF_BAND = "urn:ietf:wg:oauth:2.0:oob";
-
   private final Config config;
   private final File dataStoreDirectory;
   private final DataStoreFactory dataStoreFactory;
   private final HttpTransport httpTransport;
   private final JsonFactory jsonFactory;
+  private final Logger logger = Logger.getLogger(GoogleRetriever.class.getName());
 
   public GoogleRetriever(Config config) throws IOException, GeneralSecurityException {
     this.config = config;
@@ -75,6 +78,7 @@ public class GoogleRetriever {
 
   public Result retrieve() throws Exception {
     Credential credential = authorize();
+    logger.info("Authorized with token: " + credential.getAccessToken());
     Sheets service = new Sheets.Builder(httpTransport, jsonFactory, credential)
         .setApplicationName(config.getApplicationName())
         .build();
@@ -100,28 +104,8 @@ public class GoogleRetriever {
         Collections.singleton(SheetsScopes.SPREADSHEETS_READONLY))
             .setDataStoreFactory(dataStoreFactory)
             .build();
-    VerificationCodeReceiver dummyReceiver = new VerificationCodeReceiver() {
-      @Override
-      public String getRedirectUri() throws IOException {
-        return OUT_OF_BAND;
-      }
-
-      @Override
-      public String waitForCode() throws IOException {
-        System.out.println("Type in your code: ");
-        Scanner scanner = new Scanner(System.in);
-        try {
-          return scanner.nextLine();
-        } finally {
-          scanner.close();
-        }
-      }
-
-      @Override
-      public void stop() throws IOException {
-      }
-    };
-    return new AuthorizationCodeInstalledApp(flow, dummyReceiver)
+    final LocalServerReceiver receiver = new LocalServerReceiver.Builder().build();
+    return new AuthorizationCodeInstalledApp(flow, receiver)
         .authorize(config.getGoogleUsername());
   }
 }
