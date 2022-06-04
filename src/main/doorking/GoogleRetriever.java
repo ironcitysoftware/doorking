@@ -96,6 +96,7 @@ public class GoogleRetriever {
 
   /** Authorizes the installed application to access user's protected data. */
   private Credential authorize() throws Exception {
+    logger.info("Authorizing with LocalServerReceiver");
     AuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
         httpTransport,
         jsonFactory,
