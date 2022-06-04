@@ -30,6 +30,7 @@ import java.util.Scanner;
 import java.util.logging.Logger;
 
 import com.google.api.client.auth.oauth2.AuthorizationCodeFlow;
+import com.google.api.client.auth.oauth2.AuthorizationCodeRequestUrl;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
 import com.google.api.client.extensions.java6.auth.oauth2.VerificationCodeReceiver;
@@ -106,7 +107,13 @@ public class GoogleRetriever {
             .setDataStoreFactory(dataStoreFactory)
             .build();
     final LocalServerReceiver receiver = new LocalServerReceiver.Builder().build();
-    return new AuthorizationCodeInstalledApp(flow, receiver)
-        .authorize(config.getGoogleUsername());
+    AuthorizationCodeInstalledApp app = new AuthorizationCodeInstalledApp(flow, receiver) {
+      @Override
+      protected void onAuthorization(AuthorizationCodeRequestUrl authorizationUrl) throws IOException {
+        String url = authorizationUrl.build();
+        new ProcessBuilder("C:\\Program Files\\Mozilla Firefox\\firefox.exe", "-new-window", url).start();
+      }
+    };
+    return app.authorize(config.getGoogleUsername());
   }
 }
